@@ -1,0 +1,16 @@
+{% extends 'base.html' %} 
+{% block title %}
+  {{ post.name }} ({{ post.categoria }})
+{% endblock title %}
+{% block content %}
+<h2>Informações do post {{ post.name }} ({{ post.categoria }})</h2>
+<section class="dados-de-post">
+  <ul>
+    <li>Nome: {{ post.name }}</li>
+    <li>Categoria: {{ post.categoria }}</li>
+    <li>Conteúdo: {{ post.conteudo }}</li>
+    <li><a href="{% url 'posts:update' movie.id %}">Editar</a></li>
+    <li><a href="{% url 'posts:delete' movie.id %}">Apagar</a></li>
+  </ul>
+</section>
+{% endblock content %}
