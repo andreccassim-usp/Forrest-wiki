@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Posts da categoria: {{ categoria }}</h2>
+
+{% if posts %}
+<section class="lista-de-cards">
+    {% for post in posts %}
+    <article class="card">
+        <p>{{ post.name }}</p>
+    </article>
+    {% endfor %}
+</section>
+{% else %}
+<p>Nenhum post nessa categoria.</p>
+{% endif %}
+
+{% endblock content %}

@@ -12,7 +12,7 @@ header {
 header {
   display: grid;
     row-gap: 50px; 
-  background-color: #f5f5f5;
+  background-color: #ffffff;
   border: 0px solid rgb(118, 79, 22);
   color: rgb(165, 44, 44);
     grid-template-areas: "bx3 bx2"

@@ -18,8 +18,12 @@
     <header>
     <section><h1>Forrest Wiki</h1></section>
     <nav>
-        <ul>
-</ul>
+    <ul>
+        <il><a href="{% url 'posts:create'%}">Criar o seu Post</a></il>
+        <il><a href="{% url 'posts:search' %}">Pesquisar Posts</a></il>
+        <il><a href="/posts/">Todos os Posts</a></il>
+               <il><a href="/posts/categorias">Categorias</a></il>
+    </ul>
     </nav>
     </header>
     <main id="conteiner-principal">

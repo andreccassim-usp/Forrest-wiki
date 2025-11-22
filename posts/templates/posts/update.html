@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Editar post: {{ post.name }} ({{ post.categoria}})</h2>
+<form method="post" action="{% url 'posts:update' post.id%}">
+  {% csrf_token %}
+  <p>
+    <label for="id_name">Título:<label>
+    <input type="text" name="name" id="id_name" value="{{ post.name }}"/>
+  </p>
+  <p>
+    <label for=" id.categoria">Categoria:</label>
+    <input
+      type="text"
+      name="categoria"
+      id="id_categoria"
+      value="{{ post.categoria }}"
+    />
+  </p>
+  <p>
+    <label for=" id_conteudo">Conteúdo:</label>
+    <textarea name="conteudo" id="id_conteudo"
+              rows="12"
+              style="width:100%; font-size:1rem;">
+{{ post.conteudo}}
+        </textarea>
+  </p>
+  <button type="submit">Atualizar</button>
+</form>
+{% endblock content %}
