@@ -1,45 +1,20 @@
-{% extends 'base.html' %}
-
+{% extends 'base.html' %} 
 {% block title %}
-  {{ posts.name }} ({{ posts.categorias.all|join:", " }})
+  {{ posts.name }} ({{ posts.categoria }})
 {% endblock title %}
-
 {% block content %}
 
-<h2>Informações do post: {{ posts.name }} ({{ posts.categorias.all|join:", " }})</h2>
-
+<h2>Informações do post {{ posts.name }} ({{ posts.categorias.all|join:", " }})</h2>
 <section class="dados-de-post">
   <ul>
-    <li><strong>Nome:</strong> {{ posts.name }}</li>
+    <li>Nome: {{ posts.name }}</li>
+    <li>Categoria: {{ posts.categorias.all|join:", " }}</li>
 
-    <li><strong>Categorias:</strong> {{ posts.categorias.all|join:", " }}</li>
-
-    <li><strong>Conteúdo:</strong><br>{{ posts.conteudo|linebreaks }}</li>
+    <li>Conteúdo: {{ posts.conteudo }}</li>
 
     <li><a href="{% url 'posts:update' posts.id %}">Editar</a></li>
     <li><a href="{% url 'posts:delete' posts.id %}">Apagar</a></li>
   </ul>
-
-  <p><em>Criado em:</em> {{ posts.data }}</p>
+  <p> Criado em: {{ posts.data }}</p>
 </section>
-
-<hr>
-
-<h3>Comentários</h3>
-
-{% if comentarios %}
-  <ul>
-    {% for c in comentarios %}
-      <li><strong>{{ c.author.username }}:</strong> {{ c.text }}</li>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>Nenhum comentário ainda.</p>
-{% endif %}
-
-<br>
-<a href="{% url 'posts:add_comment' posts.id %}">
-  Adicionar comentário
-</a>
-
 {% endblock content %}
