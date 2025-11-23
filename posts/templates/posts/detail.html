@@ -29,9 +29,13 @@
 
 {% if comentarios %}
   <ul>
-    {% for c in comentarios %}
-      <li><strong>{{ c.author.username }}:</strong> {{ c.text }}</li>
-    {% endfor %}
+{% for comentario in comentarios %}
+    <div class="comentario">
+        <p><strong>{{ comentario.author.username }}</strong> disse:</p>
+        <p>{{ comentario.text }}</p>
+        <p><small>{{ comentario.data|date:"d/m/Y H:i" }}</small></p>
+    </div>
+{% endfor %}
   </ul>
 {% else %}
   <p>Nenhum comentário ainda.</p>

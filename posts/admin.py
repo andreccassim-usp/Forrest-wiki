@@ -24,5 +24,5 @@ class PostsAdmin(admin.ModelAdmin):
 
 @admin.register(Comentarios)
 class ComentariosAdmin(admin.ModelAdmin):
-    list_display = ("author", "text", "likes", "post")
+    list_display = ("author", "text", "data", "post")
     search_fields = ("text", "author__username")
