@@ -9,10 +9,14 @@ def list_posts(request):
     return render(request, 'posts/index.html', context)
 # Create your views here.
 
+def post(request, post_id):
+    post = post_data[post_id - 1]
+    return HttpResponse(
+        f'Detalhes do filme {post["name"]} ({movie["release_year"]})')
 
-def detail_posts(request, posts_id):
-    posts = get_object_or_404(Posts, pk=posts_id)
-    context = {'posts': posts}
+def detail_posts(request, post_id):
+    post = get_object_or_404(pk=post_id)
+    context = {'post': post}
     return render(request, 'posts/detail.html', context)
 
 def search_posts(request):
@@ -36,38 +40,3 @@ def create_posts(request):
             reverse('posts:index'))
     else:
         return render(request, 'posts/create.html', {})
-    
-def update_posts(request, post_id):
-    post = get_object_or_404(Posts, pk=post_id)
-
-    if request.method == "POST":
-        post.name = request.POST['name']
-        post.categoria = request.POST['categoria']
-        post.conteudo = request.POST['conteudo']
-        post.save()
-        return HttpResponseRedirect(
-            reverse('posts:detail', args=(post.id, )))
-
-    context = {'post': post}
-    return render(request, 'posts/update.html', context)
-
-
-def delete_posts(request, post_id):
-    post = get_object_or_404(Posts, pk=post_id)
-
-    if request.method == "POST":
-        post.delete()
-        return HttpResponseRedirect(reverse('posts:index'))
-
-    context = {'post': post}
-    return render(request, 'posts/delete.html', context)
-
-def list_categorias(request):
-    categorias = Posts.objects.values_list('categoria', flat=True).distinct()
-    context = {'categorias': categorias}
-    return render(request, 'posts/categorias.html', context)
-
-def posts_by_category(request, categoria):
-    posts = Posts.objects.filter(categoria=categoria)
-    context = {'categoria': categoria, 'posts': posts}
-    return render(request, 'posts/posts_by_category.html', context)

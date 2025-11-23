@@ -5,7 +5,7 @@ from django.conf import settings
 class Posts(models.Model):
     name = models.CharField(max_length=255)
     categoria = models.CharField(max_length=255)
-    conteudo = models.TextField()
+    conteudo = models.TextField(max_length=2048)
     data = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return f'{self.name} ({self.categoria})'

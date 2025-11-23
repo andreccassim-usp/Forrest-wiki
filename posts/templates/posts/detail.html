@@ -1,20 +1,16 @@
 {% extends 'base.html' %} 
 {% block title %}
-  {{ posts.name }} ({{ posts.categoria }})
+  {{ post.name }} ({{ post.categoria }})
 {% endblock title %}
 {% block content %}
-
-<h2>Informações do post {{ posts.name }} ({{ posts.categoria }})</h2>
+<h2>Informações do post {{ post.name }} ({{ post.categoria }})</h2>
 <section class="dados-de-post">
   <ul>
-    <li>Nome: {{ posts.name }}</li>
-    <li>Categoria: {{ posts.categoria }}</li>
-
-    <li>Conteúdo: {{ posts.conteudo }}</li>
-
-    <li><a href="{% url 'posts:update' posts.id %}">Editar</a></li>
-    <li><a href="{% url 'posts:delete' posts.id %}">Apagar</a></li>
+    <li>Nome: {{ post.name }}</li>
+    <li>Categoria: {{ post.categoria }}</li>
+    <li>Conteúdo: {{ post.conteudo }}</li>
+    <li><a href="{% url 'posts:update' movie.id %}">Editar</a></li>
+    <li><a href="{% url 'posts:delete' movie.id %}">Apagar</a></li>
   </ul>
-  <p> Criado em: {{ posts.data }}</p>
 </section>
 {% endblock content %}

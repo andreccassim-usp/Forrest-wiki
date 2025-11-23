@@ -12,11 +12,10 @@
   </p>
   <p>
     <label for="id_conteudo">Conteúdo:</label>
-    <textarea name="conteudo" id="id_conteudo"
-              rows="12"
-              style="width:100%; font-size:1rem;"></textarea>
+    <input type="text" name="conteudo" id="id_conteudo" />
   </p>
   <button type="submit">Criar</button>
+  <p>Criado em: {{ post.data|date:"d/m/Y H:i" }}</p>
 </form>
 
 {% endblock content %}
