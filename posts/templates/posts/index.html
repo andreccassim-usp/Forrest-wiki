@@ -4,7 +4,12 @@
 <section class="lista-de-cards">
 {% for post in posts_list %}
   <article class="card">
-    <p><a href="{% url 'posts:detail' posts_id=post.id %}">{{ post.name }} ({{ post.categoria }})</a></p>
+   <p>
+  <a href="{% url 'posts:detail' posts_id=post.id %}">
+    {{ post.name }}
+  </a>
+  ({{ post.categorias.all|join:", " }})
+</p>
   </article>
   {% endfor %}
 </section>

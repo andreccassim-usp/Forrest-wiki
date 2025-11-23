@@ -9,7 +9,7 @@
     <article class="card">
         <p>{{ categoria }}</p>
         <!-- Link para ver posts dessa categoria (opcional) -->
-        <a href="{% url 'posts:categoria_posts' categoria=categoria %}">
+        <a href="{% url 'posts:posts_by_category' categoria.id %}">
             Ver posts
         </a>
     </article>

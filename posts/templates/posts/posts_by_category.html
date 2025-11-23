@@ -1,13 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Posts da categoria: {{ categoria }}</h2>
+<h2>Posts da categoria: {{ categoria.nome }}</h2>
 
 {% if posts %}
 <section class="lista-de-cards">
     {% for post in posts %}
     <article class="card">
-        <p>{{ post.name }}</p>
+        <p>
+            <a href="{% url 'posts:detail' post.id %}">
+                {{ post.name }}
+            </a>
+        </p>
     </article>
     {% endfor %}
 </section>
