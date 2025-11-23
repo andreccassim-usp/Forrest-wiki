@@ -1,21 +1,42 @@
-{% extends 'base.html' %} {% block content %}
-<h2>Inserir Novo post</h2>
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Inserir Novo Post</h2>
+
 <form method="POST" action="{% url 'posts:create' %}">
   {% csrf_token %}
+
   <p>
-    <label for="id_name">Nome:</label>
-    <input type="text" name="name" id="id_name" />
+    <label for="id_name">Nome:</label><br>
+    <input type="text" name="name" id="id_name" required />
   </p>
+
   <p>
-    <label for="id_categoria">Categoria:</label>
-    <input type="text" name="categoria" id="id_categoria" />
+    <label>Categorias:</label><br>
+
+    {% if categorias %}
+      {% for categoria in categorias %}
+        <label style="display:block; margin-bottom:4px;">
+          <input type="checkbox"
+                 name="categorias"
+                 value="{{ categoria.id }}">
+          {{ categoria.nome }}
+        </label>
+      {% endfor %}
+    {% else %}
+      <p>Nenhuma categoria cadastrada.</p>
+    {% endif %}
   </p>
+
   <p>
-    <label for="id_conteudo">Conteúdo:</label>
-    <textarea name="conteudo" id="id_conteudo"
+    <label for="id_conteudo">Conteúdo:</label><br>
+    <textarea name="conteudo"
+              id="id_conteudo"
               rows="12"
-              style="width:100%; font-size:1rem;"></textarea>
+              style="width:100%; font-size:1rem;"
+              required></textarea>
   </p>
+
   <button type="submit">Criar</button>
 </form>
 

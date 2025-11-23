@@ -1,19 +1,20 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Posts, Comentarios
-from django.http import HttpResponse, HttpResponseRedirect
+from .models import Posts, Comentarios, Categoria
+from django.http import HttpResponseRedirect
 from django.urls import reverse
+
 
 def list_posts(request):
     posts_list = Posts.objects.all()
     context = {'posts_list': posts_list}
     return render(request, 'posts/index.html', context)
-# Create your views here.
 
 
 def detail_posts(request, posts_id):
-    posts = get_object_or_404(Posts, pk=posts_id)
-    context = {'posts': posts}
+    post = get_object_or_404(Posts, pk=posts_id)
+    context = {'posts': post}
     return render(request, 'posts/detail.html', context)
+
 
 def search_posts(request):
     context = {}
@@ -23,32 +24,53 @@ def search_posts(request):
         context = {"post_list": post_list}
     return render(request, 'posts/search.html', context)
 
+
+# -----------------------------------
+# CREATE POST - atualizado p/ categorias múltiplas
+# -----------------------------------
 def create_posts(request):
     if request.method == 'POST':
-        post_name = request.POST['name']
-        post_categoria = request.POST['categoria']
-        post_conteudo = request.POST['conteudo']
-        post = Posts(name=post_name,
-                      categoria=post_categoria,
-                      conteudo= post_conteudo)
-        post.save()
-        return HttpResponseRedirect(
-            reverse('posts:index'))
-    else:
-        return render(request, 'posts/create.html', {})
-    
+        nome = request.POST['name']
+        conteudo = request.POST['conteudo']
+        categorias_ids = request.POST.getlist("categorias")
+
+        post = Posts.objects.create(
+            name=nome,
+            conteudo=conteudo,
+        )
+
+        if categorias_ids:
+            post.categorias.set(categorias_ids)
+
+        return HttpResponseRedirect(reverse('posts:index'))
+
+    # GET -> enviar lista de categorias para o <select>
+    categorias = Categoria.objects.all()
+    return render(request, 'posts/create.html', {'categorias': categorias})
+
+
+# -----------------------------------
+# UPDATE POST - atualizado p/ categorias múltiplas
+# -----------------------------------
 def update_posts(request, post_id):
     post = get_object_or_404(Posts, pk=post_id)
 
     if request.method == "POST":
         post.name = request.POST['name']
-        post.categoria = request.POST['categoria']
         post.conteudo = request.POST['conteudo']
-        post.save()
-        return HttpResponseRedirect(
-            reverse('posts:detail', args=(post.id, )))
 
-    context = {'post': post}
+        categorias_ids = request.POST.getlist("categorias")
+        post.save()
+
+        if categorias_ids:
+            post.categorias.set(categorias_ids)
+        else:
+            post.categorias.clear()
+
+        return HttpResponseRedirect(reverse('posts:detail', args=(post.id,)))
+
+    categorias = Categoria.objects.all()
+    context = {'post': post, 'categorias': categorias}
     return render(request, 'posts/update.html', context)
 
 
@@ -63,11 +85,11 @@ def delete_posts(request, post_id):
     return render(request, 'posts/delete.html', context)
 
 def list_categorias(request):
-    categorias = Posts.objects.values_list('categoria', flat=True).distinct()
-    context = {'categorias': categorias}
-    return render(request, 'posts/categorias.html', context)
+    categorias = Categoria.objects.all()
+    return render(request, 'posts/categorias.html', {'categorias': categorias})
 
-def posts_by_category(request, categoria):
-    posts = Posts.objects.filter(categoria=categoria)
+def posts_by_category(request, categoria_id):
+    categoria = get_object_or_404(Categoria, pk=categoria_id)
+    posts = categoria.posts.all()  # graças ao related_name="posts"
     context = {'categoria': categoria, 'posts': posts}
     return render(request, 'posts/posts_by_category.html', context)

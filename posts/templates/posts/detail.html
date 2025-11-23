@@ -4,11 +4,11 @@
 {% endblock title %}
 {% block content %}
 
-<h2>Informações do post {{ posts.name }} ({{ posts.categoria }})</h2>
+<h2>Informações do post {{ posts.name }} ({{ posts.categorias.all|join:", " }})</h2>
 <section class="dados-de-post">
   <ul>
     <li>Nome: {{ posts.name }}</li>
-    <li>Categoria: {{ posts.categoria }}</li>
+    <li>Categoria: {{ posts.categorias.all|join:", " }}</li>
 
     <li>Conteúdo: {{ posts.conteudo }}</li>
 

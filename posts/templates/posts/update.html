@@ -1,29 +1,40 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<h2>Editar post: {{ post.name }} ({{ post.categoria}})</h2>
-<form method="post" action="{% url 'posts:update' post.id%}">
+<h2>Editar post: {{ post.name }}</h2>
+
+<form method="post" action="{% url 'posts:update' post.id %}">
   {% csrf_token %}
+
   <p>
-    <label for="id_name">Título:<label>
-    <input type="text" name="name" id="id_name" value="{{ post.name }}"/>
+    <label for="id_name">Título:</label><br>
+    <input type="text" name="name" id="id_name" value="{{ post.name }}" required />
   </p>
+
   <p>
-    <label for=" id.categoria">Categoria:</label>
-    <input
-      type="text"
-      name="categoria"
-      id="id_categoria"
-      value="{{ post.categoria }}"
-    />
+    <label>Categorias:</label><br>
+
+    {% for categoria in categorias %}
+      <label style="display:block; margin-bottom:4px;">
+        <input type="checkbox"
+               name="categorias"
+               value="{{ categoria.id }}"
+               {% if categoria in post.categorias.all %}checked{% endif %}>
+        {{ categoria.nome }}
+      </label>
+    {% endfor %}
   </p>
+
   <p>
-    <label for=" id_conteudo">Conteúdo:</label>
-    <textarea name="conteudo" id="id_conteudo"
+    <label for="id_conteudo">Conteúdo:</label><br>
+    <textarea name="conteudo"
+              id="id_conteudo"
               rows="12"
-              style="width:100%; font-size:1rem;">
-{{ post.conteudo}}
-        </textarea>
+              style="width:100%; font-size:1rem;"
+              required>{{ post.conteudo }}</textarea>
   </p>
+
   <button type="submit">Atualizar</button>
 </form>
+
 {% endblock content %}
