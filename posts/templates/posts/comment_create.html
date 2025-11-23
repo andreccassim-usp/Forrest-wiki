@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Adicionar comentário ao post: {{ post.name }}
+{% endblock title %}
+
+{% block content %}
+
+<h2>Adicionar comentário</h2>
+
+<p><strong>Post:</strong> {{ post.name }}</p>
+<p><strong>Categorias:</strong> {{ post.categorias.all|join:", " }}</p>
+
+<hr>
+
+<form method="post">
+  {% csrf_token %}
+  <p>
+    <label for="id_text">Comentário:</label><br>
+    <textarea id="id_text" name="text" rows="4" style="width:100%;" required></textarea>
+  </p>
+
+  <button type="submit">Enviar comentário</button>
+</form>
+
+<br>
+
+<a href="{% url 'posts:detail' post.id %}">⬅ Voltar ao post</a>
+
+{% endblock content %}

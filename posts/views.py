@@ -2,7 +2,27 @@ from django.shortcuts import render, get_object_or_404
 from .models import Posts, Comentarios, Categoria
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
+def add_comment(request, posts_id):
+    post = get_object_or_404(Posts, id=posts_id)
+
+    if request.method == "POST":
+        text = request.POST.get("text")
+
+        Comentarios.objects.create(
+            author=request.user,
+            text=text,
+            post=post
+        )
+
+        return HttpResponseRedirect(
+    reverse('posts:detail', args=(post.id,))
+)
+
+    return render(request, "posts/comment_create.html", {
+        "post": post
+    })
 
 def list_posts(request):
     posts_list = Posts.objects.all()
@@ -11,8 +31,12 @@ def list_posts(request):
 
 
 def detail_posts(request, posts_id):
-    post = get_object_or_404(Posts, pk=posts_id)
-    context = {'posts': post}
+    posts = get_object_or_404(Posts, pk=posts_id)
+    comentarios = Comentarios.objects.filter(post=posts).order_by('id')
+    context = {
+        'posts': posts,
+        'comentarios': comentarios,
+    }
     return render(request, 'posts/detail.html', context)
 
 
@@ -25,9 +49,6 @@ def search_posts(request):
     return render(request, 'posts/search.html', context)
 
 
-# -----------------------------------
-# CREATE POST - atualizado p/ categorias múltiplas
-# -----------------------------------
 def create_posts(request):
     if request.method == 'POST':
         nome = request.POST['name']
@@ -49,9 +70,6 @@ def create_posts(request):
     return render(request, 'posts/create.html', {'categorias': categorias})
 
 
-# -----------------------------------
-# UPDATE POST - atualizado p/ categorias múltiplas
-# -----------------------------------
 def update_posts(request, post_id):
     post = get_object_or_404(Posts, pk=post_id)
 
